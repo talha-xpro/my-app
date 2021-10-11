@@ -21,11 +21,19 @@ const Login = () => {
         AuthService.getCurrentUser()
 }
 
+
+const deleteUser = (e) => {
+    e.preventDefault();
+    AuthService.logout()
+}
+
+
 return (
     <div className="col-md-12">
         <div className="card card-container">
             <button onClick={handleLogin}>sigin</button>
             <button onClick={handleUser}>userdata</button>
+            <button onClick={deleteUser}>logout</button>
 
         </div>
     </div>

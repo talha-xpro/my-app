@@ -9,6 +9,14 @@ const register = (email, password) => {
             email,
             password
         }
+    }).then((response) => {
+        console.log(response.headers.authorization);
+        const jwttoken = response.headers.authorization.split('Bearer ')[1];
+        localStorage.setItem("token", jwttoken);
+        return response.data;
+    }).catch((error) => {
+        console.log(error);
+        return error;
     });
 };
 
@@ -24,22 +32,34 @@ const login = (email, password) => {
         )
         .then((response) => {
             console.log(response.headers.authorization);
-            const jwttoken = response.headers.authorization.split('Bearer ')[1];
-            localStorage.setItem("token", jwttoken);
+            const jwtToken = response.headers.authorization.split('Bearer ')[1];
+            localStorage.setItem("token", jwtToken);
             return response.data;
+        }).catch((error) => {
+            console.log(error);
+            return error;
         });
 };
 
 const logout = () => {
-    localStorage.removeItem("token");
-    return axios.post(apiUrl + '/users/sign_out', { headers: authHeader() });
+    return axios.delete(apiUrl + '/users/sign_out', { headers: authHeader() }).then((response) => {
+        localStorage.removeItem("token");
+        console.log(response.data)
+        return response.data
+    }).catch((error) => {
+        console.log(error);
+        return error;
+    });
 };
 
 const getCurrentUser = () => {
-     axios.get(apiUrl + '/current_user', { headers: authHeader() }).then((response) =>{
-         console.log(response.data)
-         return response.data
-     })
+    axios.get(apiUrl + '/current_user', { headers: authHeader() }).then((response) => {
+        console.log(response.data)
+        return response.data
+    }).catch((error) => {
+        console.log(error);
+        return error;
+    });
 };
 
 const authService = {
